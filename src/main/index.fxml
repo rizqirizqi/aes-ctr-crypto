@@ -1,0 +1,14 @@
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<GridPane fx:controller="main.CryptoController"
+          stylesheets="/main/style.css"
+          xmlns:fx="http://javafx.com/fxml" hgap="5" vgap="5">
+    <Text GridPane.rowIndex="0" id="title" text="AES CTR CRYPTO"/>
+    <Button GridPane.rowIndex="6" text="Open File" onAction="#openFileChooser"/>
+    <Label GridPane.rowIndex="7" fx:id="filename"/>
+    <Button GridPane.rowIndex="10" text="Encrypt" onAction="#encrypt"/>
+    <Button GridPane.rowIndex="11" text="Decrypt" onAction="#decrypt"/>
+</GridPane>

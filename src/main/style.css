@@ -1,0 +1,12 @@
+.root {
+    -fx-background-color: gold;
+}
+
+.label {
+    -fx-font-size: 14;
+}
+
+#title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
