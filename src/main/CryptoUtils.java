@@ -74,7 +74,7 @@ public class CryptoUtils {
 		}
 	}
 
-	private static byte[] keyExtract(File keyFile) throws Exception{
+	public static byte[] keyExtract(File keyFile) throws Exception{
 		String keyDir = keyFile.getAbsolutePath();
 		String key = "";
 
@@ -83,11 +83,12 @@ public class CryptoUtils {
 				key = scanner.nextLine();
 			}
 		} catch (IOException ex){
-			throw new CryptoException("Cannot read key", ex);
+			throw new CryptoException("Error extracting key", ex);
 		}
 
 		byte[] keyBytes = new byte[key.length()/2];
 		String buffer;
+
 		for(int i = 0; i < key.length(); i += 2){
 			buffer = key.substring(i, i+2);
 			keyBytes[i/2] = Byte.parseByte(buffer, 16);
