@@ -14,6 +14,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.CipherInputStream;
 
 /**
  * A utility class that encrypts or decrypts a file. 
@@ -49,27 +50,25 @@ public class CryptoUtils {
 
 	private static void crypto(int cipherMode, byte[] keyBytes, File inputFile, File outputFile) throws Exception {
 		try {
-
+			int read;
+			FileInputStream inputStream = new FileInputStream(inputFile);
+			FileOutputStream outputStream = new FileOutputStream(outputFile);
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 			Key secretKey = new SecretKeySpec(keyBytes, ALGORITHM);
 			IvParameterSpec ivSpec = new IvParameterSpec(IVBYTES);
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			
 			cipher.init(cipherMode, secretKey, ivSpec);
 			
-			FileInputStream inputStream = new FileInputStream(inputFile);
-			byte[] inputBytes = new byte[(int) inputFile.length()];
-			inputStream.read(inputBytes);
+			CipherInputStream cis = new CipherInputStream(inputStream, cipher);
+			while((read = cis.read()) != -1){
+				outputStream.write((char)read);
+				outputStream.flush();
+			}
 			
-			byte[] outputBytes = cipher.doFinal(inputBytes);
-			
-			FileOutputStream outputStream = new FileOutputStream(outputFile);
-			outputStream.write(outputBytes);
-			
-			inputStream.close();
 			outputStream.close();
+			inputStream.close();
 			
-		} catch (NoSuchPaddingException | NoSuchAlgorithmException
-				| InvalidKeyException | BadPaddingException
-				| IllegalBlockSizeException | IOException ex) {
+		} catch (Exception ex) {
 			throw new CryptoException("Error encrypting/decrypting file", ex);
 		}
 	}
