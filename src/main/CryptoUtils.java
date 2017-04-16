@@ -50,21 +50,25 @@ public class CryptoUtils {
 
 	private static void crypto(int cipherMode, byte[] keyBytes, File inputFile, File outputFile) throws Exception {
 		try {
-			int read;
 			FileInputStream inputStream = new FileInputStream(inputFile);
 			FileOutputStream outputStream = new FileOutputStream(outputFile);
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 			Key secretKey = new SecretKeySpec(keyBytes, ALGORITHM);
 			IvParameterSpec ivSpec = new IvParameterSpec(IVBYTES);
-			
 			cipher.init(cipherMode, secretKey, ivSpec);
 			
-			CipherInputStream cis = new CipherInputStream(inputStream, cipher);
-			while((read = cis.read()) != -1){
-				outputStream.write((char)read);
-				outputStream.flush();
+			byte[] buffer = new byte[8192];
+			int noBytes = 0;
+			byte[] cipherBlock = 
+				new byte[cipher.getOutputSize(buffer.length)];
+			int cipherBytes;
+			while((noBytes = inputStream.read(buffer)) != -1){
+				cipherBytes = cipher.update(buffer, 0, noBytes, cipherBlock);
+				outputStream.write(cipherBlock, 0, cipherBytes);
 			}
-			
+			cipherBytes = cipher.doFinal(cipherBlock,0);
+			outputStream.write(cipherBlock, 0, cipherBytes);
+
 			outputStream.close();
 			inputStream.close();
 			
@@ -85,14 +89,28 @@ public class CryptoUtils {
 			throw new CryptoException("Error extracting key", ex);
 		}
 
-		byte[] keyBytes = new byte[key.length()/2];
-		String buffer;
+		int len = key.length();
+		byte[] keyBytes = new byte[(len+1)/2];
 
-		for(int i = 0; i < key.length(); i += 2){
-			buffer = key.substring(i, i+2);
-			keyBytes[i/2] = Byte.parseByte(buffer, 16);
-		}
+		int i = 0, j = 0;
+        if ((len % 2) == 1)
+            keyBytes[j++] = (byte) hexDigit(key.charAt(i++));
 
-		return keyBytes;
+        while (i < len) {
+            keyBytes[j++] = (byte) ((hexDigit(key.charAt(i++)) << 4) |
+                                hexDigit(key.charAt(i++)));
+        }
+        return keyBytes;
 	}
+
+	public static int hexDigit(char ch) {
+        if (ch >= '0' && ch <= '9')
+            return ch - '0';
+        if (ch >= 'A' && ch <= 'F')
+            return ch - 'A' + 10;
+        if (ch >= 'a' && ch <= 'f')
+            return ch - 'a' + 10;
+
+        return(0);	// any other char is treated as 0
+    }
 }

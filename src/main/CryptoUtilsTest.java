@@ -11,8 +11,8 @@ public class CryptoUtilsTest {
 
 	public static void main(String[] args) throws Exception{
 		//Modify file input here
-		File inputFile = new File("encryption.mp3");
-		File keyFile = new File("D:\\gitProjects\\aes-ctr-crypto\\key.txt");
+		File inputFile = new File("encryption.flac");
+		File keyFile = new File("key.txt");
 		
 		try {
 			CryptoUtils.decrypt(keyFile, inputFile);
