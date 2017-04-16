@@ -1,0 +1,23 @@
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = "main.java.Main"
+sourceCompatibility = 1.8
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	compile 'org.slf4j:slf4j-api:1.7.12'
+	testCompile 'junit:junit:4.12'
+}
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'main.java.Main'
+	}
+}

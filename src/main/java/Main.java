@@ -1,4 +1,4 @@
-package main;
+package main.java;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/index.fxml"));
         primaryStage.setTitle("AES CTR Crypto");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
