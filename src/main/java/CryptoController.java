@@ -10,6 +10,7 @@ import java.io.File;
 public class CryptoController {
 
     public Label filename;
+    public File selectedFile;
 
     public void openFileChooser(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
@@ -19,7 +20,7 @@ public class CryptoController {
                 new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         Stage fcStage = new Stage();
-        File selectedFile = fileChooser.showOpenDialog(fcStage);
+        selectedFile = fileChooser.showOpenDialog(fcStage);
         fcStage.close();
         if (selectedFile != null) {
             filename.setText(selectedFile.getName());
@@ -31,6 +32,16 @@ public class CryptoController {
     }
 
     public void decrypt(ActionEvent actionEvent) {
-
+        File keyFile = new File("C:\\Users\\maKse\\Desktop\\CIS\\test2\\key.txt");
+        System.out.println(keyFile.exists());
+        System.out.println(selectedFile.exists());
+        try {
+            CryptoUtils.decrypt(keyFile, selectedFile);
+        } catch (CryptoException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
