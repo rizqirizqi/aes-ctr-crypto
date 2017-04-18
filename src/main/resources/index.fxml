@@ -1,14 +1,108 @@
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:controller="main.java.CryptoController"
-          stylesheets="style.css"
-          xmlns:fx="http://javafx.com/fxml" hgap="5" vgap="5">
-    <Text GridPane.rowIndex="0" id="title" text="AES CTR CRYPTO"/>
-    <Button GridPane.rowIndex="6" text="Open File" onAction="#openFileChooser"/>
-    <Label GridPane.rowIndex="7" fx:id="filename"/>
-    <Button GridPane.rowIndex="10" text="Encrypt" onAction="#encrypt"/>
-    <Button GridPane.rowIndex="11" text="Decrypt" onAction="#decrypt"/>
-</GridPane>
+
+<BorderPane fx:controller="main.java.CryptoController" stylesheets="style.css"
+			fx:id="root" prefHeight="450.0" prefWidth="600.0"
+			xmlns="http://javafx.com/javafx/8.0.121"
+			xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <GridPane prefHeight="95.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Text id="title" text="AES-CTR Crypto" textAlignment="CENTER" GridPane.halignment="CENTER">
+                    <GridPane.margin>
+                        <Insets top="20.0" />
+                    </GridPane.margin>
+                </Text>
+            </children>
+        </GridPane>
+    </top>
+    <center>
+        <GridPane prefWidth="600.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="70.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Text text="File to encrypt/decrypt:" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
+                <JFXButton text="Open File" alignment="CENTER" buttonType="RAISED" ripplerFill="WHITE"
+                           textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                           onAction="#openPlaintextFileChooser" />
+                <Label fx:id="plaintextFileName" text="Open the file to encrypt/decrypt"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1" textOverrun="CENTER_ELLIPSIS" >
+                    <GridPane.margin>
+                        <Insets left="80.0" />
+                    </GridPane.margin>
+                </Label>
+                <Text text="Key:" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
+                <JFXButton text="Open File" alignment="CENTER" buttonType="RAISED" ripplerFill="WHITE"
+                           textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                           onAction="#openKeyFileChooser" />
+                <Label fx:id="keyFileName" text="Open file which contains 128/192/256 key"
+                       GridPane.rowIndex="3" GridPane.columnIndex="1" textOverrun="CENTER_ELLIPSIS" >
+                    <GridPane.margin>
+                        <Insets left="80.0" />
+                    </GridPane.margin>
+                </Label>
+
+                <JFXButton text="Encrypt" alignment="CENTER" buttonType="RAISED"
+                           prefHeight="34.0" prefWidth="80.0" ripplerFill="WHITE"
+                           textAlignment="CENTER" GridPane.rowIndex="5" GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER" onAction="#encrypt">
+                    <GridPane.margin>
+                        <Insets right="100.0" />
+                    </GridPane.margin>
+                </JFXButton>
+                <JFXButton text="Decrypt" alignment="CENTER" buttonType="RAISED"
+                           prefHeight="34.0" prefWidth="80.0" ripplerFill="WHITE"
+                           textAlignment="CENTER" GridPane.rowIndex="5" GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER" onAction="#decrypt">
+                    <GridPane.margin>
+                        <Insets left="100.0" />
+                    </GridPane.margin>
+                </JFXButton>
+                <Label fx:id="cryptMessage" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                       GridPane.halignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                    <GridPane.margin>
+                        <Insets bottom="15.0" />
+                    </GridPane.margin>
+                </Label>
+                <Label fx:id="outputFileLocation" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                       GridPane.halignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                    <GridPane.margin>
+                        <Insets top="15.0" />
+                    </GridPane.margin>
+                </Label>
+                <JFXSpinner fx:id="processingSpinner" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                            GridPane.halignment="CENTER" styleClass="blue-spinner" visible="false"/>
+            </children>
+        </GridPane>
+    </center>
+</BorderPane>

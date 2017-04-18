@@ -1,47 +1,81 @@
 package main.java;
 
+import com.jfoenix.controls.JFXSpinner;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 import java.io.File;
 
 public class CryptoController {
 
-    public Label filename;
-    public File selectedFile;
+    public File plaintextFile;
+    public File keyFile;
 
-    public void openFileChooser(ActionEvent actionEvent) {
+    public Label plaintextFileName;
+    public Label keyFileName;
+    public Label cryptMessage;
+    public Label outputFileLocation;
+    public JFXSpinner processingSpinner;
+
+    public void openPlaintextFileChooser(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
                 new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+                new FileChooser.ExtensionFilter("PDF", "*.pdf"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        Stage fcStage = new Stage();
-        selectedFile = fileChooser.showOpenDialog(fcStage);
-        fcStage.close();
-        if (selectedFile != null) {
-            filename.setText(selectedFile.getName());
+        plaintextFile = fileChooser.showOpenDialog(null);
+        if (plaintextFile != null) {
+            plaintextFileName.setText(plaintextFile.getName());
+        }
+    }
+
+    public void openKeyFileChooser(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        keyFile = fileChooser.showOpenDialog(null);
+        if (keyFile != null) {
+            keyFileName.setText(keyFile.getName());
         }
     }
 
     public void encrypt(ActionEvent actionEvent) {
-
+        processingSpinner.setVisible(true);
+        if(plaintextFile == null) {
+            cryptMessage.setText("Please open the file to encrypt!");
+        } else if(keyFile == null) {
+            cryptMessage.setText("Please open the key file first!");
+        } else {
+            try {
+                String encryptedFileName = CryptoUtils.encrypt(keyFile, plaintextFile);
+                cryptMessage.setText("Encryption success! The encrypted file is saved in:");
+                outputFileLocation.setText(encryptedFileName);
+            } catch (Exception e) {
+                cryptMessage.setText(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        processingSpinner.setVisible(false);
     }
 
     public void decrypt(ActionEvent actionEvent) {
-        File keyFile = new File("C:\\Users\\maKse\\Desktop\\CIS\\test2\\key.txt");
-        System.out.println(keyFile.exists());
-        System.out.println(selectedFile.exists());
-        try {
-            CryptoUtils.decrypt(keyFile, selectedFile);
-        } catch (CryptoException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        processingSpinner.setVisible(true);
+        if(plaintextFile == null) {
+            cryptMessage.setText("Please open the file to decrypt!");
+        } else if(keyFile == null) {
+            cryptMessage.setText("Please open the key file first!");
+        } else {
+            try {
+                String decryptedFileName = CryptoUtils.decrypt(keyFile, plaintextFile);
+                cryptMessage.setText("Decryption success! The encrypted file is saved in:");
+                outputFileLocation.setText(decryptedFileName);
+            } catch (Exception e) {
+                cryptMessage.setText(e.getMessage());
+                e.printStackTrace();
+            }
         }
+        processingSpinner.setVisible(false);
     }
 }

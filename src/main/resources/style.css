@@ -1,12 +1,17 @@
 .root {
-    -fx-background-color: gold;
+    -fx-background-color: #E8F8FF;
 }
 
-.label {
-    -fx-font-size: 14;
+.button {
+    -fx-background-color: #30CDBD;
+    -fx-text-fill: #FFFFFF;
 }
 
 #title {
-    -fx-font-size: 20;
-    -fx-font-weight: bold;
+    -fx-fill: #125972;
+    -fx-font-size: 36;
+}
+
+.blue-spinner .arc {
+    -fx-stroke: #125972;
 }
