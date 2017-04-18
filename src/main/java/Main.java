@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 public class Main extends Application {
 
     @Override
@@ -17,6 +20,20 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        removeJavaCipherKeyRestriction();
         launch(args);
+    }
+
+    private static void removeJavaCipherKeyRestriction() {
+        try {
+            Field field = Class.forName("javax.crypto.JceSecurity").getDeclaredField("isRestricted");
+            field.setAccessible(true);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(null, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
