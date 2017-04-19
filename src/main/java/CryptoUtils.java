@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Key;
+import java.security.InvalidKeyException;
 import java.util.Scanner;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -101,7 +102,11 @@ public class CryptoUtils {
 			outputStream.close();
 			inputStream.close();
 			
-		} catch (Exception ex) {
+		} catch (InvalidKeyException ex){
+			throw new CryptoException("Caught InvalidKeyException: Key must have length of 32, 48, or 64 byte\n" + ex.getMessage(), ex);
+		} catch (IOException ex){
+			throw new CryptoException("Caught IOException: Error while processing file\n" + ex.getMessage(), ex);
+		}catch (Exception ex) {
 			throw new CryptoException("Error encrypting/decrypting file", ex);
 		}
 	}
@@ -138,7 +143,7 @@ public class CryptoUtils {
 				key = scanner.nextLine();
 			}
 		} catch (IOException ex){
-			throw new CryptoException("Error extracting key", ex);
+			throw new CryptoException("Caught IOException: Error while scanning key from " + keyDir + "\n" + ex.getMessage(), ex);
 		}
 
 		int len = key.length();
@@ -167,7 +172,7 @@ public class CryptoUtils {
 		else ret = -1;
 
 		if(ret == -1){
-			throw new CryptoException("Invalid key format", new Exception());
+			throw new CryptoException("Caught Exception: Invalid key format, key must use Hexadecimal format.\nCharacter " + ch + " is not a Hexadecimal character", new Exception());
 		}
 		return ret;
 	}
