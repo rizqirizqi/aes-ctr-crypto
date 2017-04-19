@@ -155,14 +155,20 @@ public class CryptoUtils {
         return keyBytes;
 	}
 
-	public static int hexDigit(char ch) {
-        if (ch >= '0' && ch <= '9')
-            return ch - '0';
-        if (ch >= 'A' && ch <= 'F')
-            return ch - 'A' + 10;
-        if (ch >= 'a' && ch <= 'f')
-            return ch - 'a' + 10;
+	public static int hexDigit(char ch) throws Exception{
+		int ret;
 
-        return(0);	// any other char is treated as 0
-    }
+		if (ch >= '0' && ch <= '9')
+			ret = ch - '0';
+		else if (ch >= 'A' && ch <= 'F')
+			ret = ch - 'A' + 10;
+		else if (ch >= 'a' && ch <= 'f')
+			ret = ch - 'a' + 10;
+		else ret = -1;
+
+		if(ret == -1){
+			throw new CryptoException("Invalid key format", new Exception());
+		}
+		return ret;
+	}
 }
