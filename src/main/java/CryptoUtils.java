@@ -11,14 +11,9 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
-/**
- * A utility class that encrypts or decrypts a file. 
- * @author www.codejava.net
- *
- */
 public class CryptoUtils {
 	private static final String ALGORITHM = "AES";
-	private static final String TRANSFORMATION = "AES/CTR/PKCS5Padding";
+	private static final String TRANSFORMATION = "AES/CTR/NoPadding";
 	private static final byte[] IVBYTES = new byte[] 
 		{ 0x00, 0x01, 0x02, 0x03, 0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 };
 
