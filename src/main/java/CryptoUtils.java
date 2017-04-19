@@ -68,14 +68,33 @@ public class CryptoUtils {
 			cipher.init(cipherMode, secretKey, ivSpec);
 			
 			byte[] buffer = new byte[8192];
-			int noBytes = 0;
-			byte[] cipherBlock = 
-				new byte[cipher.getOutputSize(buffer.length)];
+			byte[] cipherBlock = new byte[cipher.getOutputSize(buffer.length)];
 			int cipherBytes;
-			while((noBytes = inputStream.read(buffer)) != -1){
-				cipherBytes = cipher.update(buffer, 0, noBytes, cipherBlock);
+
+			int lastNoBytes = 0;
+			int currNoBytes = inputStream.read(buffer);
+			int nextNoBytes = 0;
+			while(currNoBytes != -1){
+				cipherBytes = cipher.update(buffer, 0, currNoBytes, cipherBlock);
+				nextNoBytes = inputStream.read(buffer);
+				if(nextNoBytes == -1 && cipherMode == Cipher.DECRYPT_MODE){
+					cipherBytes -= cipherBlock[cipherBytes-1];
+				}
+
+				outputStream.write(cipherBlock, 0, cipherBytes);
+				lastNoBytes = currNoBytes;
+				currNoBytes = nextNoBytes;
+			}
+
+			if(cipherMode == Cipher.ENCRYPT_MODE){
+				int pad = 16 - (lastNoBytes % 16);
+				byte[] padding = addPadding(pad);
+
+				System.out.println(pad);
+				cipherBytes = cipher.update(padding, 0, pad, cipherBlock);
 				outputStream.write(cipherBlock, 0, cipherBytes);
 			}
+
 			cipherBytes = cipher.doFinal(cipherBlock,0);
 			outputStream.write(cipherBlock, 0, cipherBytes);
 
@@ -85,6 +104,29 @@ public class CryptoUtils {
 		} catch (Exception ex) {
 			throw new CryptoException("Error encrypting/decrypting file", ex);
 		}
+	}
+
+	public static byte[] addPadding(int pad){
+		int size = pad;
+		if(pad % 16 == 0){
+			size = 16;
+		}
+
+		byte[] padding = new byte[size];
+		for(int i = 0; i < size; i++){
+			padding[i] = (byte) pad;
+		}
+
+		return padding;
+	}
+
+	public static String printArr(byte[] arr){
+		String buff = "";
+		int len = arr.length;
+		for(int i = 0; i < len; i++){
+			buff += arr[i] + ",";
+		}
+		return buff;
 	}
 
 	public static byte[] keyExtract(File keyFile) throws Exception{
