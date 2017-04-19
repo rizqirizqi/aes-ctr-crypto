@@ -20,11 +20,13 @@ public class CryptoController {
     public void openPlaintextFileChooser(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-                new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
-                new FileChooser.ExtensionFilter("PDF", "*.pdf"),
-                new FileChooser.ExtensionFilter("All Files", "*.*"));
+                new FileChooser.ExtensionFilter("All Files", "*.*"),
+				new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+				new FileChooser.ExtensionFilter("Executable Files", "*.exe"),
+				new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+				new FileChooser.ExtensionFilter("PDF", "*.pdf"),
+				new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+				new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.avi", "*.mov"));
         plaintextFile = fileChooser.showOpenDialog(null);
         if (plaintextFile != null) {
             plaintextFileName.setText(plaintextFile.getName());
