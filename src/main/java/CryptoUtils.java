@@ -120,15 +120,6 @@ public class CryptoUtils {
 		return padding;
 	}
 
-	public static String printArr(byte[] arr){
-		String buff = "";
-		int len = arr.length;
-		for(int i = 0; i < len; i++){
-			buff += arr[i] + ",";
-		}
-		return buff;
-	}
-
 	public static byte[] keyExtract(File keyFile) throws Exception{
 		String keyDir = keyFile.getAbsolutePath();
 		String key = "";
