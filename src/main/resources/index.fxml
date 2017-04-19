@@ -56,7 +56,7 @@
                            textAlignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="1"
                            onAction="#openPlaintextFileChooser" />
                 <Label fx:id="plaintextFileName" text="Open the file to encrypt/decrypt"
-                       GridPane.rowIndex="1" GridPane.columnIndex="1" textOverrun="CENTER_ELLIPSIS" >
+                       GridPane.rowIndex="1" GridPane.columnIndex="1" textOverrun="ELLIPSIS" >
                     <GridPane.margin>
                         <Insets left="80.0" />
                     </GridPane.margin>
@@ -65,8 +65,8 @@
                 <JFXButton text="Open File" alignment="CENTER" buttonType="RAISED" ripplerFill="WHITE"
                            textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3"
                            onAction="#openKeyFileChooser" />
-                <Label fx:id="keyFileName" text="Open file which contains 128/192/256 key"
-                       GridPane.rowIndex="3" GridPane.columnIndex="1" textOverrun="CENTER_ELLIPSIS" >
+                <Label fx:id="keyFileName" text="Open the file which contains 128/192/256 bit key in hex format"
+                       GridPane.rowIndex="3" GridPane.columnIndex="1" textOverrun="ELLIPSIS" >
                     <GridPane.margin>
                         <Insets left="80.0" />
                     </GridPane.margin>
